@@ -6,8 +6,6 @@ app.use(cookieParser())
 app.use(express.json())
 const ports = 3003;
 
-
-
 app.use('/api' , ApiRouter)
 
 app.listen(ports , ()=> {
