@@ -4,7 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "caaqil": "nodemon start.js"
+    "dev": "nodemon start.js"
   },
   "keywords": [],
   "author": "",
