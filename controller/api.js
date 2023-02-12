@@ -126,9 +126,9 @@ export const send_tracker = (req , res ) => {
               if(err) res.send({massage: err });
                 if (respon.length > 0) {
                     const send_now = `*831*${respon[0].s_number}*05*4683#`;
-                    res.json({massage : send_now})
+                    res.json(send_now)
                 } else {
-                    res.json({massage : 'no'})
+                    res.json('')
                 }
             })
         } else if ("1 " == massage_body.substring(20, 22)) {
@@ -138,9 +138,9 @@ export const send_tracker = (req , res ) => {
               if(err) res.send({massage: err });
                 if (respon.length > 0) {
                     const send_now = `*831*${respon[0].s_number}*1*4683#`;
-                    res.json({massage : send_now})
+                    res.json(send_now)
                 } else {
-                    res.json({massage : 'no'})
+                    res.json('')
                 }
             })
         } else if (2.5 == massage_body.substring(20, 23)) {
@@ -150,9 +150,9 @@ export const send_tracker = (req , res ) => {
               if(err) res.send({massage: err });
                 if (respon.length > 0) {
                     const send_now = `*831*${respon[0].s_number}*2*5#`;
-                    res.json({massage : send_now})
+                    res.json(send_now)
                 } else {
-                    res.json({massage : 'no'})
+                    res.json('')
                 }
             })
         } else {
