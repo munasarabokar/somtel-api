@@ -1,9 +1,10 @@
 import db  from '../database/data.js'
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import sendAll from '../models/send.js';
 dotenv.config()
-// git config --global user.email "munasarabokar@gmail.com"
-//git config --global user.name "Munasar abuukar"
 
+
+// get list all
 export const get_tracker = (req , res ) => {
     // check if api is vali
   const find_key = "SELECT * FROM api WHERE  api_key = ? ";
@@ -26,7 +27,7 @@ export const get_tracker = (req , res ) => {
     }
   });
 }
-
+// add users
 export const add_tracker = (req , res ) => {
      // check if api is vali
   const find_key = "SELECT * FROM api WHERE  api_key = ? ";
@@ -52,7 +53,7 @@ export const add_tracker = (req , res ) => {
   });
    
 }
-
+// delete
 export const delete_tracking = (req , res ) => {
        // check if api is vali
   const find_key = "SELECT * FROM api WHERE  api_key = ? ";
@@ -76,7 +77,7 @@ export const delete_tracking = (req , res ) => {
   });
    
 }
-
+// edit tracking
 export const update_tracking = (req , res ) => {
     // check if api is vali
 const find_key = "SELECT * FROM api WHERE  api_key = ? ";
@@ -99,4 +100,68 @@ db.query(find_key , value , (err , find_keys ) => {
  }
 });
 
+}
+
+// send tracking
+
+
+export const send_tracker = (req , res ) => {
+    // massage body
+    const massage_body = req.body.list;
+    const one = "1 ";
+    // check if api is vali
+ const find_key = "SELECT * FROM api WHERE  api_key = ? ";
+ const value = [req.params.link];
+ // db query 
+ db.query(find_key , value , (err , find_keys ) => {
+    const numbers = 'false';
+    const check = '';
+   if(err) res.send({massage: err });
+   if (find_keys.length > 0) { 
+                    // check if 
+        if (0.5 == massage_body.substring(20, 23)) {
+            const numbers = massage_body.substring(35, 44);
+            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
+            db.query(select , (err , respon) => {
+              if(err) res.send({massage: err });
+                if (respon.length > 0) {
+                    const send_now = `*831*${respon[0].s_number}*05*4683#`;
+                    res.json({massage : send_now})
+                } else {
+                    res.json({massage : 'no'})
+                }
+            })
+        } else if ("1 " == massage_body.substring(20, 22)) {
+            const numbers = massage_body.substring(33, 42)
+            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
+            db.query(select , (err , respon) => {
+              if(err) res.send({massage: err });
+                if (respon.length > 0) {
+                    const send_now = `*831*${respon[0].s_number}*1*4683#`;
+                    res.json({massage : send_now})
+                } else {
+                    res.json({massage : 'no'})
+                }
+            })
+        } else if (2.5 == massage_body.substring(20, 23)) {
+            const numbers = massage_body.substring(35, 44)
+            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
+            db.query(select , (err , respon) => {
+              if(err) res.send({massage: err });
+                if (respon.length > 0) {
+                    const send_now = `*831*${respon[0].s_number}*2*5#`;
+                    res.json({massage : send_now})
+                } else {
+                    res.json({massage : 'no'})
+                }
+            })
+        } else {
+            res.send({massage : numbers})
+        }
+
+   } else {
+       res.send({massage : "api key not valid"});
+   }
+ });
+  
 }

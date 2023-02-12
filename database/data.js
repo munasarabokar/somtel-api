@@ -17,7 +17,7 @@ connection.connect(function(error){
     console.log('Mysql is working not good'); 
    } else {
     console.log('Mysql is working good');
-   }
+   } 
 });
 
 export default  connection;
