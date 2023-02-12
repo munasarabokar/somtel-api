@@ -156,7 +156,7 @@ export const send_tracker = (req , res ) => {
                 }
             })
         } else {
-            res.send({massage : numbers})
+            res.json('')
         }
 
    } else {
