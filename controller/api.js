@@ -144,7 +144,7 @@ export const send_tracker = (req , res ) => {
                res.json(result)
               });
         } else {
-            res.json('')
+            res.json('*301#')
         }
 
    } else {
