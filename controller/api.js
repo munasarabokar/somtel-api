@@ -114,47 +114,35 @@ export const send_tracker = (req , res ) => {
  const value = [req.params.link];
  // db query 
  db.query(find_key , value , (err , find_keys ) => {
-    const numbers = 'false';
+    const numbers = '';
     const check = '';
    if(err) res.send({massage: err });
    if (find_keys.length > 0) { 
                     // check if 
         if (0.5 == massage_body.substring(20, 23)) {
-            const numbers = massage_body.substring(35, 44);
-            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
-            db.query(select , (err , respon) => {
-              if(err) res.send({massage: err });
-                if (respon.length > 0) {
-                    const send_now = `*831*${respon[0].s_number}*05*4683#`;
-                    res.json(send_now)
-                } else {
-                    res.json('')
-                }
-            })
+            // daily
+           const numbers = massage_body.substring(35, 44)
+           const amounts = '05'
+           sendAll(numbers, amounts).then(result => {
+            /* process */
+           res.json(result)
+          });
         } else if ("1 " == massage_body.substring(20, 22)) {
+            // two days
             const numbers = massage_body.substring(33, 42)
-            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
-            db.query(select , (err , respon) => {
-              if(err) res.send({massage: err });
-                if (respon.length > 0) {
-                    const send_now = `*831*${respon[0].s_number}*1*4683#`;
-                    res.json(send_now)
-                } else {
-                    res.json('')
-                }
-            })
+            const amounts = '1'
+            sendAll(numbers, amounts).then(result => {
+                /* process */
+               res.json(result)
+              });
         } else if (2.5 == massage_body.substring(20, 23)) {
+            //week 
             const numbers = massage_body.substring(35, 44)
-            const select  =  `SELECT * FROM macaamiil WHERE h_number = ${numbers}`;
-            db.query(select , (err , respon) => {
-              if(err) res.send({massage: err });
-                if (respon.length > 0) {
-                    const send_now = `*831*${respon[0].s_number}*2*5#`;
-                    res.json(send_now)
-                } else {
-                    res.json('')
-                }
-            })
+            const amounts = '2*5'
+            sendAll(numbers, amounts).then(result => {
+                /* process */
+               res.json(result)
+              });
         } else {
             res.json('')
         }
