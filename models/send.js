@@ -10,7 +10,7 @@ const sendAll = (index, amounts) =>
               const data =   `*831*${respon[0].s_number}*${amounts}*4683#`;
               resolve(data);
           } else {
-            resolve('*301#');
+            resolve('');
           }
       });
     }, 4000)
