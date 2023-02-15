@@ -1,9 +1,11 @@
 import express from 'express'
-import { add_tracker, update_tracking , delete_tracking, get_tracker , send_tracker } from '../controller/api.js'
+import { add_tracker, update_tracking , delete_tracking, get_tracker , send_tracker, check } from '../controller/api.js'
 
 const router = express.Router()
 
 router.get('/all/:link' , get_tracker)
+
+router.get('/check' , check)
 
 router.get('/delete/:id/:link' , delete_tracking)
 

@@ -215,7 +215,7 @@ export const send_tracker = (req , res ) => {
 }
 
 export const check = (req , res) => {
-    //  const check = 'select * from types';
+    //  const check = 'SELECT SUM(qiimaha) as day FROM natiijo WHERE created_at > CURDATE() AND user_id = "2" AND xaalada = "success"';
     // db.query(check, (err , ress) => {
     //    if (ress.length > 0) {
     //     res.json(ress);
