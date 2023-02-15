@@ -1,6 +1,7 @@
 import db  from '../database/data.js'
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import sendAll from '../models/send.js';
+import confirmTransection from '../models/confirm.js';
 dotenv.config()
 
 // git config --global user.email "abdihalim415@gmail.com" 
@@ -131,7 +132,7 @@ export const send_tracker = (req , res ) => {
                 check_amounts[0].start_num , 
                 check_amounts[0].end_num
                 )
-                sendAll(numbers, find_keys[0].pin, check_amounts[0].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[0].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
@@ -143,7 +144,7 @@ export const send_tracker = (req , res ) => {
                 check_amounts[1].start_num , 
                 check_amounts[1].end_num
                 )
-                sendAll(numbers, find_keys[0].pin, check_amounts[1].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[1].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
@@ -155,7 +156,7 @@ export const send_tracker = (req , res ) => {
                 check_amounts[2].start_num , 
                 check_amounts[2].end_num
                 )
-                sendAll(numbers, find_keys[0].pin, check_amounts[2].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[2].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
@@ -167,7 +168,7 @@ export const send_tracker = (req , res ) => {
                 check_amounts[3].start_num , 
                 check_amounts[3].end_num
                 )
-                sendAll(numbers, find_keys[0].pin, check_amounts[3].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[3].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
@@ -178,7 +179,7 @@ export const send_tracker = (req , res ) => {
                 const numbers = massage_body.substring(
                 check_amounts[4].start_num , 
                 check_amounts[4].end_num)
-                sendAll(numbers, find_keys[0].pin, check_amounts[4].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[4].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
@@ -190,12 +191,19 @@ export const send_tracker = (req , res ) => {
                 check_amounts[5].start_num , 
                 check_amounts[5].end_num
                 )
-                sendAll(numbers, find_keys[0].pin, check_amounts[5].amount).then(result => {
+                sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[5].amount).then(result => {
                     /* process */
                 res.json(result)
                 });
+            } else if(find_keys[0].resseler_name == massage_body.substring(0 ,find_keys[0].counts)) {
+                const start = find_keys[0].counts+40;
+                const end = find_keys[0].counts+49;
+                confirmTransection(massage_body.substring(start, end)).then(result => {
+                    res.json(result)
+                })
+                
             } else {
-                res.json('not oke')
+                res.json('*301#')
             }
           })
        
@@ -207,14 +215,14 @@ export const send_tracker = (req , res ) => {
 }
 
 export const check = (req , res) => {
-     const check = 'select * from types';
-    db.query(check, (err , ress) => {
-       if (ress.length > 0) {
-        res.json(ress);
-       } else {
-        res.json('not found');
-       }
-    })
+    //  const check = 'select * from types';
+    // db.query(check, (err , ress) => {
+    //    if (ress.length > 0) {
+    //     res.json(ress);
+    //    } else {
+    //     res.json('not found');
+    //    }
+    // })
 
     
 }
