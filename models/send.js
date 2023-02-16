@@ -20,10 +20,14 @@ const sendAll = (index, pin , user_id , amounts) =>
                    if(send_data.length > 0) {
                     const data =   `${send_data[0].starts}${resp[0].s_number}*${resamont[0].a_s}*${pin}#`;
                      const natiijo_val = [user_id ,resp[0].cid  , amounts , 'pending'];
-                     db.query(insert_natiijo , natiijo_val , (err , natiijosucc) => {
-                       if(err) resolve(err)
-                       resolve(data);
-                     })
+                     if(resp[0].xaalada == 'active') {
+                      db.query(insert_natiijo , natiijo_val , (err , natiijosucc) => {
+                        if(err) resolve(err)
+                        resolve(data);
+                      })
+                     } else {
+                      resolve('*301#')
+                     }
                    } else {
                     resolve('*301#')
                    }
