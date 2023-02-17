@@ -118,12 +118,13 @@ export const send_tracker = (req , res ) => {
  db.query(find_key , value , (err , find_keys ) => {
     const numbers = '';
     const check = '';
-   if(err) res.send({massage: err });
-   if (find_keys.length > 0) { 
+   if(err) res.json('false');
+   if (find_keys.length > 0  ) { 
         // check if 
-        const check_massage = 'SELECT * FROM amounts';
+        if(find_keys[0].xaalada == 'active') {
+            const check_massage = 'SELECT * FROM amounts';
           db.query(check_massage , (err , check_amounts) => {
-            if(err) res.json(err);
+            if(err) res.json('false');
             
             if(sender == '192') {
                 if (check_amounts[0].amount == massage_body.substring(
@@ -198,7 +199,7 @@ export const send_tracker = (req , res ) => {
                     res.json(result)
                     });
                 } else  {
-                    res.json('*301#')
+                    res.json('false')
                 }
             } else if (sender == 'Reseller') {
                 if(find_keys[0].resseler_name == massage_body.substring(0 ,find_keys[0].counts)) {
@@ -209,12 +210,16 @@ export const send_tracker = (req , res ) => {
                     })
                 }
             }   else {
-                res.json('*301#');
+                res.json('false');
             }
           })
+        } else {
+            res.json('banned');
+        }
+        
        
    } else {
-       res.send({massage : "api key not valid"});
+       res.json("invalid");
    }
  });
   

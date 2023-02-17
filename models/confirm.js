@@ -18,11 +18,11 @@ const confirmTransection = (index) =>
                     resolve('success')
                   })
                 } else {
-                  resolve('*301#')
+                  resolve('false')
                 }
               })
             } else {
-              resolve('*301#')
+              resolve('false')
             }
          })
     }, 4000)
