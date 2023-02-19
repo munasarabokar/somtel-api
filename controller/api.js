@@ -9,23 +9,20 @@ dotenv.config()
 // get list all
 export const get_tracker = (req , res ) => {
     // check if api is vali
-  const find_key = "SELECT * FROM api WHERE  api_key = ? ";
+  const find_key = "SELECT * FROM api WHERE  email = ? ";
   // select query after api is getting
   const querys = "SELECT * FROM macaamiil WHERE  user_id = ? ORDER BY cid DESC";
   // params link insert via api mobile or web
-  const value = [req.params.link];
+  const value = [req.query.raadi];
   // db query 
   db.query(find_key , value , (err , find_keys ) => {
-    if(err) res.send({massage: err });
+    if(err) res.status(500).json('err')
     if (find_keys.length > 0) {
-        db.query(querys , [find_keys[0].user_id] , (err , resss) => {
-            if(err) res.send({massage: err });
-            if (resss.length > 0) {
-                res.send({massage : resss})
-            }
-        })
+        res.status(200).json(find_keys[0]);
+       console.log('success');
     } else {
-        res.send({massage : "api key not valid"});
+        res.status(200).json({massage : "not registered yet.."});
+        console.log('not found');
     }
   });
 }
