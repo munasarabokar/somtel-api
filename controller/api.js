@@ -9,19 +9,19 @@ dotenv.config()
 // get list all
 export const get_tracker = (req , res ) => {
     // check if api is vali
-  const find_key = "SELECT * FROM api WHERE  email = ? ";
+  const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
   // select query after api is getting
   const querys = "SELECT * FROM macaamiil WHERE  user_id = ? ORDER BY cid DESC";
   // params link insert via api mobile or web
-  const value = [req.query.raadi];
+  const value = [req.params.hex];
   // db query 
-  db.query(find_key , value , (err , find_keys ) => {
+  db.query(find_key , value , (err , userdata ) => {
     if(err) res.status(500).json('err')
-    if (find_keys.length > 0) {
-        res.status(200).json(find_keys[0]);
+    if (userdata.length > 0) {
+        res.status(200).json(userdata[0]);
        console.log('success');
     } else {
-        res.status(200).json({massage : "not registered yet.."});
+        res.status(200).json({massage : "hex not found yet.."});
         console.log('not found');
     }
   });

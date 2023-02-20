@@ -3,7 +3,7 @@ import { Postcheck,add_tracker, update_tracking , delete_tracking, get_tracker ,
 
 const router = express.Router()
 
-router.get('/all' , get_tracker)
+router.get('/all/:hex' , get_tracker)
 
 router.get('/check' , check)
 router.post('/check' , Postcheck)

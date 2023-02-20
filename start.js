@@ -1,5 +1,6 @@
 import express from 'express'
 import ApiRouter from './routes/api.js'
+import AuthRouter from './routes/auth.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
@@ -14,7 +15,8 @@ app.use(express.json())
 const ports = 3003;
 
 app.use('/api', cors(corsOptions) , ApiRouter)
+app.use('/auth', cors(corsOptions) , AuthRouter)
 
 app.listen(ports , ()=> {
-    console.log('Ports on 3003');
+    console.log('Ports on '+ports+'....');
 })
