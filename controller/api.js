@@ -119,97 +119,47 @@ export const send_tracker = (req , res ) => {
    if (find_keys.length > 0  ) { 
         // check if 
         if(find_keys[0].xaalada == 'active') {
-            const check_massage = 'SELECT * FROM amounts';
-          db.query(check_massage , (err , check_amounts) => {
-            if(err) res.json('false');
-            
-            if(sender == '192') {
-                if (check_amounts[0].amount == massage_body.substring(
-                    check_amounts[0].start_amount , 
-                    check_amounts[0].end_amount
-                    )) {
-                   const numbers = massage_body.substring(
-                    check_amounts[0].start_num , 
-                    check_amounts[0].end_num
-                    )
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[0].amount).then(result => {
+          if (sender == '192') {
+            const number  = massage_body.replace(/[^0-9\.]+/g, ",");
+            var n_arr = []
+            const words = number.split(",")
+            words.forEach(counts)
+            function counts(count) {
+              n_arr.push({ count })
+            }
+            const check_massage = 'SELECT * FROM amounts WHERE amount = ?';
+            db.query(check_massage , [n_arr[1].count]+' ' , (err , ress ) => {
+                if(err) res.status(500).json(err);
+                if (ress.length > 0) {
+                    const amount = n_arr[1].count;
+                    const numbers = n_arr[2].count.substring(1)
+                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id ,amount).then(result => {
                         /* process */
                     res.json(result)
                     });
-                } else if (check_amounts[1].amount == massage_body.substring(
-                    check_amounts[1].start_amount , 
-                    check_amounts[1].end_amount
-                    )) {
-                    const numbers = massage_body.substring(
-                    check_amounts[1].start_num , 
-                    check_amounts[1].end_num
-                    )
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[1].amount).then(result => {
-                        /* process */
-                    res.json(result)
-                    });
-                } else if (check_amounts[2].amount == massage_body.substring(
-                    check_amounts[2].start_amount , 
-                    check_amounts[2].end_amount
-                    )) {
-                    const numbers = massage_body.substring(
-                    check_amounts[2].start_num , 
-                    check_amounts[2].end_num
-                    )
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[2].amount).then(result => {
-                        /* process */
-                    res.json(result)
-                    });
-                }else if (check_amounts[3].amount == massage_body.substring(
-                    check_amounts[3].start_amount , 
-                    check_amounts[3].end_amount
-                    )) {
-                    const numbers = massage_body.substring(
-                    check_amounts[3].start_num , 
-                    check_amounts[3].end_num
-                    )
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[3].amount).then(result => {
-                        /* process */
-                    res.json(result)
-                    });
-                } else if (check_amounts[4].amount == massage_body.substring(
-                    check_amounts[4].start_amount , 
-                    check_amounts[4].end_amount
-                    )) {
-                    const numbers = massage_body.substring(
-                    check_amounts[4].start_num , 
-                    check_amounts[4].end_num)
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[4].amount).then(result => {
-                        /* process */
-                    res.json(result)
-                    });
-                } else if (check_amounts[5].amount == massage_body.substring(
-                    check_amounts[5].start_amount , 
-                    check_amounts[5].end_amount
-                    )) {
-                    const numbers = massage_body.substring(
-                    check_amounts[5].start_num , 
-                    check_amounts[5].end_num
-                    )
-                    sendAll(numbers, find_keys[0].pin, find_keys[0].user_id , check_amounts[5].amount).then(result => {
-                        /* process */
-                    res.json(result)
-                    });
-                } else  {
+                     
+                } else {
                     res.json('false')
                 }
-            } else if (sender == 'Reseller') {
-                if(find_keys[0].resseler_name == massage_body.substring(0 ,find_keys[0].counts)) {
-                    const start = find_keys[0].counts+40;
-                    const end = find_keys[0].counts+49;
-                    confirmTransection(massage_body.substring(start, end)).then(result => {
-                        res.json(result)
-                    })
+               
+            })
+          } else if (sender == 'Reseller') {
+            const number  = massage_body.replace(/[^0-9\.]+/g, ",");
+                var n_arr = []
+                const words = number.split(",")
+                words.forEach(counts)
+                function counts(count) {
+                n_arr.push({ count })
                 }
-            }   else {
-                res.json('false');
-            }
-          })
+                const balance = n_arr[4].count
+                const numbers = n_arr[1].count
+                confirmTransection(numbers, find_keys[0].user_id , balance).then(result => {
+                    /* process */
+                            res.json(result)
+                    
+                    })
+                // res.json(n_arr)
+          }
         } else {
             res.json('banned');
         }
@@ -236,10 +186,18 @@ export const check = (req , res) => {
 }
 export const Postcheck = (req , res) => {
   
-    // const massage_sender = req.body.sender;
-    // const massage_body = req.body.list
+    const sender = req.body.sender;
+    const massage_body = req.body.list
 
-    
-
-    
+    const number  = massage_body.replace(/[^0-9\.]+/g, ",");
+    var n_arr = []
+    const words = number.split(",")
+    words.forEach(counts)
+    function counts(count) {
+      n_arr.push({ count })
+    }
+    const balance = n_arr[4].count
+    const numbers = n_arr[1].count
+  
+   res.json(n_arr[4].count)
 }
