@@ -159,6 +159,8 @@ export const send_tracker = (req , res ) => {
                     
                     })
                 // res.json(n_arr)
+          } else {
+            res.json('false')
           }
         } else {
             res.json('banned');
