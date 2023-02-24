@@ -6,7 +6,7 @@ import cors from 'cors'
 
 
 
-var whitelist = ['https://caaqil-api.vercel.app', 'http://localhost:3000']
+var whitelist = ['https://www.munasar.co.uk', 'http://localhost:3000']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
