@@ -4,11 +4,18 @@ import AuthRouter from './routes/auth.js'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
-var corsOptions = {
-    origin: 'https://caaqil-api.vercel.app',
-    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
-  }
 
+
+var whitelist = ['https://caaqil-api.vercel.app', 'http://localhost:3000']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 const app = express();
 app.use(cookieParser())
 app.use(express.json())
