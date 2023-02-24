@@ -4,99 +4,93 @@ import sendAll from '../models/send.js';
 import confirmTransection from '../models/confirm.js';
 dotenv.config()
 
-// git config --global user.email "abdihalim415@gmail.com" 
-//   git config --global user.name "Munasar Abuukar"
-// get list all
-export const get_tracker = (req , res ) => {
-    // check if api is vali
+
+
+//get statics 
+export const get_data = (req , res ) => {
   const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
-  // select query after api is getting
   const querys = "SELECT * FROM macaamiil WHERE  user_id = ? ORDER BY cid DESC";
-  // params link insert via api mobile or web
   const value = [req.params.hex];
-  // db query 
   db.query(find_key , value , (err , userdata ) => {
-    if(err) res.status(500).json('err')
-    if (userdata.length > 0) {
-        res.status(200).json(userdata[0]);
-       console.log('success');
-    } else {
-        res.status(200).json({massage : "hex not found yet.."});
-        console.log('not found');
-    }
+    if (err) return res.status(500).json(err);
+    if (userdata.length === 0) return res.status(404).json("User not found!");
+    return res.status(200).json(userdata)
   });
 }
+
+
+// list all data
+export const get_tracker = (req , res ) => {
+  const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
+  const querys = "SELECT * FROM macaamiil WHERE  user_id = ? ORDER BY cid DESC";
+  const value = [req.params.hex];
+  db.query(find_key , value , (err , userdata ) => {
+    if (err) return res.status(500).json(err);
+    if (userdata.length === 0) return res.status(404).json("User not found!");
+     db.query(querys , [userdata[0].user_id]  , (err , macaamiilData) => {
+      if (err) return res.status(500).json(err);
+      if (macaamiilData.length === 0) return res.status(404).json("not found!");
+      return res.status(200).json(macaamiilData)
+     })
+  });
+}
+
+
 // add users
 export const add_tracker = (req , res ) => {
-     // check if api is vali
-  const find_key = "SELECT * FROM api WHERE  api_key = ? ";
-  // select query after api is getting
-  const insert = "INSERT INTO `macaamiil` (`user_id`, `name`, `h_number`, `s_number`) VALUES (?, ?, ?, ?);";
-  // params link insert via api mobile or web
+  const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
+  const insert = "INSERT INTO `macaamiil` (`user_id`, `name`, `h_number`, `s_number` , `types` ) VALUES (?, ?, ?, ? , ? );";
   const value = [req.params.link];
   // db query 
-  db.query(find_key , value , (err , find_keys ) => {
-    if(err) res.send({massage: err });
-    if (find_keys.length > 0) {
-        const adding = [find_keys[0].user_id , req.body.name , req.body.hor , req.body.som ];
+  db.query(find_key , value , (err , userdata ) => {
+    if (err) return res.status(500).json(err);
+    if (userdata.length === 0) return res.status(404).json("User not found!");
+        const adding = [userdata[0].user_id , req.body.name , req.body.hor , req.body.som ,  req.body.type ];
         //res.send({massage : adding})
         db.query(insert , adding , (err , resss) => {
-            if(err) res.send({massage: err });
-            
-                res.send({massage : "success"})
-            
+          if (err) return res.status(500).json(err);
+          return res.status(200).json({massage : "success"})
         })
-    } else {
-        res.send({massage : "api key not valid"});
-    }
+   
   });
    
 }
 // delete
 export const delete_tracking = (req , res ) => {
-       // check if api is vali
-  const find_key = "SELECT * FROM api WHERE  api_key = ? ";
-  // select query after api is getting
+  const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
   const querys = "DELETE FROM macaamiil WHERE  `cid`= ? AND user_id = ?";
-  // params link insert via api mobile or web
   const value = [req.params.link];
- 
   // db query 
-  db.query(find_key , value , (err , find_keys ) => {
-    if(err) res.send({massage: err });
-    if (find_keys.length > 0) {
-        const id = [req.params.id , find_keys[0].user_id];
+  db.query(find_key , value , (err , userdata ) => {
+    if (err) return res.status(500).json(err);
+    if (userdata.length === 0) return res.status(404).json("User not found!");
+        const id = [req.params.id , userdata[0].user_id];
         db.query(querys , id , (err , resss) => {
-            if(err) res.send({massage: err });
-                res.send({massage : "deleted success   ....."})
+          if (err) return res.status(500).json(err);
+          return res.status(200).json({massage : "deleted success"})
         })
-    } else {
-        res.send({massage : "api key not valid"});
-    }
+    
   });
    
 }
 // edit tracking
 export const update_tracking = (req , res ) => {
-    // check if api is vali
-const find_key = "SELECT * FROM api WHERE  api_key = ? ";
+  const find_key = "SELECT * FROM user_login WHERE  hexgen = ? ";
 // select query after api is getting
-const querys = "UPDATE macaamiil SET name = ? , h_number = ? , s_number = ?  WHERE cid = ?";
+const querys = "UPDATE macaamiil SET name = ? , h_number = ? , s_number = ? , types = ?  , xaalada = ? WHERE cid = ?";
 // params link insert via api mobile or web
 const value = [req.params.link];
 
 // db query 
-db.query(find_key , value , (err , find_keys ) => {
- if(err) res.send({massage: err });
- if (find_keys.length > 0) {
-    const id = [ req.body.name , req.body.hor , req.body.som, req.params.id ];
+db.query(find_key , value , (err , userdata ) => {
+  if (err) return res.status(500).json(err);
+    if (userdata.length === 0) return res.status(404).json("User not found!");
+    const id = [ req.body.name , req.body.h_number , req.body.s_number, req.body.types , req.body.xaalada , req.params.id ];
      db.query(querys , id , (err , resss) => {
-         if(err) res.send({massage: err });
-             res.send({massage : "updated success   ....."})
+      if (err) return res.status(500).json(err);
+      return res.status(200).json({massage : "updated success ..."})
      })
- } else {
-     res.send({massage : "api key not valid"});
- }
+
 });
 
 }
@@ -107,8 +101,7 @@ db.query(find_key , value , (err , find_keys ) => {
 export const send_tracker = (req , res ) => {
     // massage body
     const massage_body = req.body.list;
-    const sender = req.body.sender;
-    // check if api is valiD
+    const sender = req.body.senderD
  const find_key = "SELECT * FROM api WHERE  api_key = ? ";
  const value = [req.params.link];
  // db query 
@@ -172,34 +165,4 @@ export const send_tracker = (req , res ) => {
    }
  });
   
-}
-
-export const check = (req , res) => {
-    //  const check = 'SELECT SUM(qiimaha) as day FROM natiijo WHERE created_at > CURDATE() AND user_id = "2" AND xaalada = "success"';
-    // db.query(check, (err , ress) => {
-    //    if (ress.length > 0) {
-    //     res.json(ress);
-    //    } else {
-    //     res.json('not found');
-    //    }
-    // })
-
-    
-}
-export const Postcheck = (req , res) => {
-  
-    const sender = req.body.sender;
-    const massage_body = req.body.list
-
-    const number  = massage_body.replace(/[^0-9\.]+/g, ",");
-    var n_arr = []
-    const words = number.split(",")
-    words.forEach(counts)
-    function counts(count) {
-      n_arr.push({ count })
-    }
-    const balance = n_arr[4].count
-    const numbers = n_arr[1].count
-  
-   res.json(n_arr[4].count)
 }
