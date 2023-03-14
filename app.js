@@ -1,9 +1,9 @@
-import express from 'express'
-import ApiRouter from './routes/api.js'
-import AuthRouter from './routes/auth.js'
-import cookieParser from 'cookie-parser'
-import cors from 'cors'
-
+'use strict';
+const express = require('express')
+const ApiRouter = require('./routes/route.js')
+const cookieParser = require('cookie-parser')
+const cors = require('cors')
+ const responseTime = require('response-time')
 
 
 var whitelist = ['https://www.munasar.co.uk', 'http://localhost:3000']
@@ -17,12 +17,12 @@ var corsOptions = {
   }
 }
 const app = express();
+ app.use(responseTime())
 app.use(cookieParser())
 app.use(express.json())
-const ports = 3003;
+const ports = 3000;
 
 app.use('/api', cors(corsOptions) , ApiRouter)
-app.use('/auth', cors(corsOptions) , AuthRouter)
 
 app.listen(ports , ()=> {
     console.log('Ports on '+ports+'....');
